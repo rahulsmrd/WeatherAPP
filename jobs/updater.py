@@ -4,7 +4,7 @@ from jobs.jobs import get_cities_and_update_DB, get_aggregates
 
 def start_job1():
     scheduler1 = BackgroundScheduler()
-    scheduler1.add_job(func=get_cities_and_update_DB, trigger='interval', minutes=10)
+    scheduler1.add_job(func=get_cities_and_update_DB, trigger='interval', minutes=5)
     scheduler1.start()
 
 def start_job2():
