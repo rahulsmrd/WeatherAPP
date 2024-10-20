@@ -1,9 +1,8 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
-
+import datetime
 from home.models import WeatherModel, City, DailyWeatherModel, alerts
 from jobs.jobs import fetch_weather, check_alerts, get_cities_and_update_DB
-import re
 
 # Create your views here.
 def home(request):
@@ -12,6 +11,8 @@ def home(request):
     cities = City.objects.all()
     for city in cities:
         weather_data = WeatherModel.objects.filter(city=city).last()
+        weather_data.timestamp = datetime.datetime.now()
+        weather_data.save()
         weather.append(weather_data)
         alert, val = check_alerts(city, weather_data)
         if alert:
@@ -47,13 +48,6 @@ def create_alerts(request):
 def myAlerts(request):
     alerts_q = alerts.objects.all()
     return render(request, 'my_alerts.html', {'alerts': alerts_q})
-
-def update_weather(request):
-    try:
-        get_cities_and_update_DB()
-    except Exception as e:
-        return render(request, 'home.html', {'error': 'Error updating weather data, please try again later.'})
-    return redirect(reverse('home:home'))
 
 def chartVisualization(request, city):
     days = DailyWeatherModel.objects.filter(city__name=city).all()
