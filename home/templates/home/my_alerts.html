@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}My Alerts{% endblock %}
+{% block MyAlerts %}active{% endblock %}
+{% block body %}
+<div class="container mt-5 text-center">
+    <h1 class="mb-5">My alerts ...</h1>
+    <table class="table table-striped">
+        <tr>
+            <th class="fs-4">City</th>
+            <th class="fs-4">Alert on :</th>
+        </tr>
+        {% for alert in alerts %}
+        <tr>
+            <td class="fs-5">{{ alert.city.name }}</td>
+            <td class="fs-5">{{ alert.alert_type }} {{ alert.alert_condition }} {{ alert.alert_value }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

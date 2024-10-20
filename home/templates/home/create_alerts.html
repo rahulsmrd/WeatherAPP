@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}Create Alerts{% endblock %}
+{% block CreateAlert %}active{% endblock %}
+{% block body %}
+<div class="container my-5">
+    <h1 class="text-center mb-5">Create an Alert ...</h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <label for="city">Your Cities :</label>
+                <select name="city" id="city" class="form-control">
+                    <option value="">---</option>
+                    {% for city in cities %}
+                    <option value="{{ city.name }}">{{ city.name }}</option>
+                    {% endfor %}
+                </select>
+                <p>If the city is not in the list first please add the city and try again.</p>
+            </div>
+        </div><br>
+        <div class="row">
+            <div class="col-md-4">
+                <label for="alert_on">Alert On :</label>
+                <select name="alert_on" id="alert_on" class="form-control">
+                    <option value="">---</option>
+                    <option value="temperature">Temperature</option>
+                    <option value="weather_condition">Weather Condition</option>
+                    <option value="feels_like">Feels Like</option>
+                    <option value="wind_speed">Wind Speed</option>
+                    <option value="humidity">Humidity</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="alert_condition">Alert Condition :</label>
+                <select name="alert_condition" id="alert_condition" class="form-control">
+                    <option value="">---</option>
+                    <option value=">">Greater than (>)</option>
+                    <option value="<">Less than (<)</option>
+                    <option value="=">Equal to (=)</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="alert_val">Alter Value :</label>
+                <input type="text" name="alert_val" id="alert_val" class="form-control">
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-outline-success form-control">Add Alert</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% block title %}Weather Analytics{% endblock %}
+{% block body %}
+<div class="container my-5">
+    {% if error %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>{{error}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+    {% if city %}
+    <h1 class="text-center mb-5">Daily Weather Analysis for <strong>{{ city }}</strong></h1>
+    <div class="row">
+        <div class="col-md-6">
+            <div id="min_temperature" style="height:500px;"></div>
+        </div>
+        <div class="col-md-6">
+            <div id="max_temperature" style="height:500px;"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div id="avg_temperature" style="width:100%; max-width:600px; height:500px;"></div>
+        </div>
+        <div class="col-md-6">
+            <div id="weather_condition" style="width:100%; max-width:600px; height:500px;"></div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div id="max_humidity" style="width:100%; max-width:600px; height:500px;"></div>
+        </div>
+        <div class="col-md-6">
+            <div id="max_wind_speed" style="width:100%; max-width:600px; height:500px;"></div>
+        </div>
+    </div>
+</div>
+<script>
+    google.charts.load('current',{packages:['corechart', 'line', 'bar']});
+    google.charts.setOnLoadCallback(drawChart);
+    
+    function drawChart() {
+    
+    // Set Data
+    const min_temperature = google.visualization.arrayToDataTable({{ min_temperature|safe }});
+    const max_temperature = google.visualization.arrayToDataTable({{ max_temperature|safe }});
+    const avg_temperature = google.visualization.arrayToDataTable({{ avg_temperature|safe }});
+    const max_humidity = google.visualization.arrayToDataTable({{ max_humidity|safe }});
+    const max_wind_speed = google.visualization.arrayToDataTable({{ max_wind_speed|safe }});
+    const weather_condition = google.visualization.arrayToDataTable({{ weather_condition|safe }});
+    
+    // Set Options
+    const min_temperature_options = {
+      title: 'Day wise Minimum Temperature',
+      hAxis: {title: 'Date'},
+      vAxis: {title: 'Temperature °C'},
+      legend: 'none'
+    };
+    const max_temperature_options = {
+      title: 'Day wise Maximum Temperature',
+      hAxis: {title: 'Date'},
+      vAxis: {title: 'Temperature °C'},
+      legend: 'none'
+    };
+    const avg_temperature_options = {
+      title: 'Day wise Average Temperature',
+      hAxis: {title: 'Date'},
+      vAxis: {title: 'Temperature °C'},
+      legend: 'none'
+    };
+    const max_humidity_options = {
+      title: 'Day wise Maximum Humidity',
+      hAxis: {title: 'Date'},
+      vAxis: {title: 'Humidity %'},
+      legend: 'none'
+    };
+    const max_wind_speed_options = {
+      title: 'Day wise Maximum Speed',
+      hAxis: {title: 'Date'},
+      vAxis: {title: 'Speed (km/h)'},
+      legend: 'none'
+    };
+    const weather_condition_options = {
+      title: 'Day wise Dominent Weather condition',
+      hAxis: {title: 'Date'},
+      vAxis: {
+        title: 'Condition',
+        ticks: [
+            {% for type in types %}
+            {v: {{ type.1 }}, f: "{{ type.0 }}"},
+            {% endfor %}
+            ]
+      },
+      legend: 'none'
+    };
+    
+    // Draw
+    const min_temperature_chart = new google.visualization.LineChart(document.getElementById('min_temperature'));
+    const max_temperature_chart = new google.visualization.LineChart(document.getElementById('max_temperature'));
+    const avg_temperature_chart = new google.visualization.LineChart(document.getElementById('avg_temperature'));
+    const weather_condition_chart = new google.visualization.ColumnChart(document.getElementById('weather_condition'));
+    const max_humidity_chart = new google.visualization.ColumnChart(document.getElementById('max_humidity'));
+    const max_wind_speed_chart = new google.visualization.ColumnChart(document.getElementById('max_wind_speed'));
+
+    min_temperature_chart.draw(min_temperature, min_temperature_options);
+    max_temperature_chart.draw(max_temperature, max_temperature_options);
+    avg_temperature_chart.draw(avg_temperature, avg_temperature_options);
+    weather_condition_chart.draw(weather_condition, weather_condition_options);
+    max_humidity_chart.draw(max_humidity, max_humidity_options);
+    max_wind_speed_chart.draw(max_wind_speed, max_wind_speed_options);
+    
+    }
+    </script>
+{% endif %}
+{% endblock %}

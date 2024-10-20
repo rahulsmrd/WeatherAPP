@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block homeActive %}active{% endblock %}
+{% block body %}
+<div class="container-fluid">
+    {% if error %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>{{error}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+    {% for alert in alerts %}
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>{{alert}}</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endfor %}
+    <div class="container my-5">
+        <h1 class="text-center mb-5">Weather Data ... </h1>
+        {% for data in weather %}
+        {% if forloop.counter0|divisibleby:3 %}
+        <div class="row">
+            {% endif %}
+            <div class="col-md-3">
+                <div class="card" style="width: 18rem;">
+                    <h5 class="card-header text-center" style="background-color: azure;">{{ data.city.name }}</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Temperature: {{ data.temperature }}°C</li>
+                        <li class="list-group-item">Feels Like: {{ data.feels_like }}°C</li>
+                        <li class="list-group-item">Condition: {{ data.weather_condition }}</li>
+                        <li class="list-group-item">Humidity: {{ data.humidity }} %</li>
+                        <li class="list-group-item">Wind: {{ data.wind_speed }} km/h</li>
+                        <div class="card-body list-group-item">
+                            <a href="{% url 'home:visualize' data.city.name %}"
+                            class="card-link btn btn-outline-success" style="max-width: 10em;">Day wise
+                            Analytics</a>
+                            <a href="{% url 'home:delete' data.city.name %}"
+                            class="card-link btn btn-outline-danger">Delete</a>
+                        </div>
+                        <li class="list-group-item" style="color: gray;">Updated on : {{ data.timestamp }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-1"></div>
+            {% if forloop.counter|divisibleby:3 %}
+        </div> <br>
+        {% endif %}
+        {% endfor %}
+    </div><br>
+</div>
+</div>
+{% endblock %}

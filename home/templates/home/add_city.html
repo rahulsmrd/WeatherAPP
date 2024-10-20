@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Add City{% endblock %}
+{% block body %}
+{% if error %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>{{error}}</strong>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+{% if success %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <strong>Success!</strong> City added successfully...
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endif %}
+<div class="container my-5">
+    <h1 class="text-center mb-5">Add a City ... </h1>
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+                <label for="name">City :</label>
+                <input type="text" id="name" name="city_name" class="form-control" required>
+            </div>
+            <div class="col-md-6">
+                <label for="country">Country Code :</label>
+                <input type="text" id="country" name="country" class="form-control" required>
+                <p>(Example : India -> IN)</p>
+            </div>
+        </div><br>
+        <div class="row">
+            <div class="col-md-3"></div>
+            <div class="col-md-5">
+                <button type="submit" class="btn btn-outline-success form-control">Add City</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
