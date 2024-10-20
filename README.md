@@ -4,7 +4,7 @@
 - Enables to add multiple cities of user wish.
 - Takes the weather data for every 10 mins from the API.
 - Once in a Day i.e. at 11:55 PM it collects the aggregates of the day and stores them.
-- Can vizualize graphically The Day Wise Analysis of each and every city.
+- Can visualise  graphically The Day Wise Analysis of each and every city.
 - Can add and view alerts which you will get notified on the home screen. 
 
 ## Design Parameters
